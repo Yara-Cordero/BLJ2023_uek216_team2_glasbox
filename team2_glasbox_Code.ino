@@ -16,8 +16,8 @@ const char* topicHum = "zuerich/glasbox/temperature/humidity";
 const char* topicMax = "zuerich/glasbox/temperature/max";
 const char* topicMin = "zuerich/glasbox/temperature/min";
 
-float Maxtemp = 32;
-float Mintemp = 30;
+float Maxtemp = 27;
+float Mintemp = 21;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -43,7 +43,7 @@ void setup_aht() {
  }
  Serial.println("done!");
 }
-
+//wifi Verbindung herstellen
 void setup_wifi() {
   Serial.print("Connecting to ");
   Serial.print(ssid);
@@ -54,8 +54,8 @@ void setup_wifi() {
   }
  Serial.println("done!");
 }
-//callback if statement for topic min and max seperate, same as bsp add end convert to float and save in global variable
-//purpose: subscribe to topic receive data
+
+//Daten aus Node-RED empfangen
 void callback(char* topic, byte* payload, unsigned int length) {
   
   if(strcmp(topic, topicMax) == 0) {
@@ -77,6 +77,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 }
 
+//Wiederherstellung der MQTT verbindung
 void reconnect() {
   Serial.print("Attempting MQTT connection...");
   while(!client.connected()) {
@@ -104,16 +105,18 @@ void loop() {
   char humBuffer[10];
   float MaxMinDif = Maxtemp - Mintemp;
  
+ /*
   Serial.println(temp.temperature);
   Serial.println(humidity.relative_humidity);
   Serial.println(Maxtemp);
   Serial.println(Mintemp);
-  Serial.print("Max Min difference: ")
+  Serial.print("Max Min difference: ");
   Serial.println(MaxMinDif);
-
+*/
   sprintf(tempBuffer, "%f", temp.temperature);
   sprintf(humBuffer, "%f", humidity.relative_humidity);
-  
+
+  //Temperatur und Luftfeuchtigkeit unter dem richtigen Topic veröffentlichen
   client.publish(topicTemp, tempBuffer);
   client.publish(topicHum, humBuffer);
  
