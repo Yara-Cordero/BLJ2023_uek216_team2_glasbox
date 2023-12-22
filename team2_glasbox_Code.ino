@@ -105,7 +105,7 @@ void loop() {
   char humBuffer[10];
   float MaxMinDif = Maxtemp - Mintemp;
  
- /*
+ /* print für Ausgabe Daten auf Serial Monitor
   Serial.println(temp.temperature);
   Serial.println(humidity.relative_humidity);
   Serial.println(Maxtemp);
